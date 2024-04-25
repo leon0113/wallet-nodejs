@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const router = require("./routes");
 const app = express();
 const cors = require("cors");
-const bodyParser = require("body-parser");
 
 app.use(cors());
 app.use(express.json());
