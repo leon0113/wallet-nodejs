@@ -1,5 +1,5 @@
 const z = require("zod");
-const User = require("../../db");
+const { User, Account } = require("../../db");
 const { JWT_SECRET } = require("../../config");
 const jwt = require("jsonwebtoken");
 
@@ -38,6 +38,10 @@ const userSignUp = async (req, res) => {
 
     if (user) {
         const userId = user._id;
+        await Account.create({
+            userId,
+            balance: Math.ceil(1 + Math.random() * 10000)
+        })
         // console.log(userId);
         const token = jwt.sign({ userId }, JWT_SECRET);
 
@@ -91,10 +95,8 @@ const updateUserBody = z.object({
 })
 
 const userUpdate = async (req, res) => {
-    const authHeader = req.headers.authorization;
-    const token = authHeader.split(" ")[1];
-    const { success } = updateUserBody.safeParse(req.body);
 
+    const { success } = updateUserBody.safeParse(req.body);
     if (!success) {
         return res.status(411).json({
             message: "Error while updating information"
@@ -102,16 +104,12 @@ const userUpdate = async (req, res) => {
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        const userId = decoded.userId;
-        console.log(userId);
-
-        const u = await User.findOneAndUpdate({ _id: userId }, {
+        const u = await User.findOneAndUpdate({ _id: req.userId }, {
             password: req.body.password,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
         }, {
-            new: true //return the updated document
+            new: true
         });
         console.log(u);
         res.json({
@@ -126,11 +124,40 @@ const userUpdate = async (req, res) => {
     }
 };
 
+//! =============== filter user ==================
 
+const bulkUser = async (req, res) => {
+    // retrive query parameter from the url
+    const filter = req.query.filter || "";
+
+    const users = await User.find({
+        $or: [{
+            firstName: {
+                "$regex": filter
+            },
+        }, {
+            lastName: {
+                "$regex": filter
+            }
+        }]
+    });
+
+    const filteredUsers = users.map((user) => ({
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        _id: user._id,
+    }));
+
+    res.json({
+        user: filteredUsers
+    })
+}
 
 
 module.exports = {
     userSignUp,
     userSignIn,
-    userUpdate
+    userUpdate,
+    bulkUser
 }

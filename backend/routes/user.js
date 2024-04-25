@@ -1,5 +1,5 @@
 const express = require('express');
-const { userSignUp, userSignIn, userUpdate } = require('../service/user');
+const { userSignUp, userSignIn, userUpdate, bulkUser } = require('../service/user');
 const { authMiddleware } = require('../middleware/authMiddleware');
 
 const userRouter = express.Router();
@@ -12,6 +12,7 @@ userRouter.get('/test', authMiddleware, (req, res) => {
 userRouter.post('/signup', userSignUp);
 userRouter.post('/signin', userSignIn);
 userRouter.put('/updateUser', authMiddleware, userUpdate)
+userRouter.get('/bulk', bulkUser)
 
 
 
