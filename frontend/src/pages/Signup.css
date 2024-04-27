@@ -1,0 +1,18 @@
+.bgPic {
+    position: relative;
+}
+
+.bgPic::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://i.ytimg.com/vi/XIkvTKXL2bo/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDx-lRAohUL08gjnqtmf6fcKdpdHA');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    filter: blur(5px);
+    z-index: -1;
+}

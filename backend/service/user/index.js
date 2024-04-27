@@ -24,9 +24,10 @@ const userSignUp = async (req, res) => {
     });
 
     if (existingUser) {
-        return res.status(411).json({
+        res.status(411).json({
             message: "User already exist with this user name"
         })
+        return;
     }
 
     const user = await User.create({
@@ -73,11 +74,8 @@ const userSignIn = async (req, res) => {
     })
 
     if (user) {
-        const token = jwt.sign({ userId: user._id }, JWT_SECRET);
-        // console.log(token);
         return res.json({
             message: 'Logged in successfully',
-            token: token,
         })
     } else {
         return res.status(411).json({

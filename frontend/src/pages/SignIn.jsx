@@ -3,9 +3,10 @@ import { Button } from "../components/Button"
 import { Heading } from "../components/Heading"
 import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
+import './Signin.css'
 
 export const SignIn = () => {
-    return <div className="bg-slate-500 h-screen flex justify-center">
+    return <div className="h-screen flex justify-center bgPicc">
         <div className="flex flex-col justify-center">
             <div className="rounded-lg bg-slate-100 w-80 text-center p-2 h-max px-4">
                 <Heading label={"Sign in"} />
@@ -15,7 +16,7 @@ export const SignIn = () => {
                 <div className="pt-4">
                     <Button label={"Sign in"} />
                 </div>
-                <BottomWarning label={"Don't have an account?"} buttonText={"Sign up"} to={"/signin"} />
+                <BottomWarning label={"Don't have an account?"} buttonText={"Sign up"} to={"/"} />
             </div>
         </div>
     </div>

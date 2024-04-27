@@ -12,7 +12,7 @@ userRouter.get('/test', authMiddleware, (req, res) => {
 userRouter.post('/signup', userSignUp);
 userRouter.post('/signin', userSignIn);
 userRouter.put('/updateUser', authMiddleware, userUpdate)
-userRouter.get('/bulk', bulkUser)
+userRouter.get('/bulk', authMiddleware, bulkUser)
 
 
 
